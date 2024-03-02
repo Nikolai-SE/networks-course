@@ -63,20 +63,20 @@
 
 #### Демонстрация работы
 
-Create
+Create 
 ![](2024-03-02-12-36-03.png)
 
 Get 
 ![](2024-03-02-12-43-24.png)
 
-Delete
+Delete 
 ![](2024-03-02-12-50-20.png)
 ![](2024-03-02-12-51-12.png)
 
-List
+List 
 ![](2024-03-02-13-14-51.png)
 
-Update
+Update 
 ![](2024-03-02-13-18-55.png)
 
 
@@ -106,7 +106,7 @@ Post image
 Put icon name 
 ![alt text](2024-03-02-14-40-59.png)
 
-Get icon
+Get icon 
 ![alt text](2024-03-02-14-48-31.png)
 
 

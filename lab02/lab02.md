@@ -100,7 +100,15 @@ Update
 ```
 
 #### Демонстрация работы
-todo
+Post image 
+![alt text](2024-03-02-14-40-18.png)
+
+Put icon name 
+![alt text](2024-03-02-14-40-59.png)
+
+Get icon
+![alt text](2024-03-02-14-48-31.png)
+
 
 ---
 

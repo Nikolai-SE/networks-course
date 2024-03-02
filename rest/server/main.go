@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"networks-course/rest/products"
+	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +23,9 @@ func main() {
 	router.GET("/", homePage)
 	router.GET("/products", productsHandler.Listproducts)
 	router.POST("/product", productsHandler.CreateProduct)
+	router.POST("/product/:id/image", productsHandler.SetImage)
 	router.GET("/product/:id", productsHandler.GetProduct)
+	router.GET("/product/:id/image", productsHandler.GetProductImage)
 	router.PUT("/product/:id", productsHandler.UpdateProduct)
 	router.DELETE("/product/:id", productsHandler.DeleteProduct)
 
@@ -70,6 +75,38 @@ func (h productsHandler) CreateProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, view)
 }
 
+func ImgPath(id int, fileName string) string {
+	return fmt.Sprintf("img/%d/%s", id, fileName)
+}
+
+func (h productsHandler) SetImage(c *gin.Context) {
+	id_string := c.Param("id")
+
+	id, err_conv := strconv.Atoi(id_string)
+	if err_conv != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err_conv.Error()})
+		return
+	}
+
+	img_dir := fmt.Sprintf("img/%s", id_string)
+	os.Mkdir(img_dir, os.ModePerm)
+
+	file, err := c.FormFile("icon")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	filename := ImgPath(id, filepath.Base(file.Filename))
+	if err := c.SaveUploadedFile(file, filename); err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, filename)
+}
+
 func (h productsHandler) Listproducts(c *gin.Context) {
 	r, err := h.store.List()
 	if err != nil {
@@ -95,6 +132,37 @@ func (h productsHandler) GetProduct(c *gin.Context) {
 	}
 
 	c.JSON(200, product)
+}
+
+func (h productsHandler) GetProductImage(c *gin.Context) {
+	id_string := c.Param("id")
+
+	id, err := strconv.Atoi(id_string)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	product, err := h.store.Get(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	fileName := product.Icon
+	content, err := os.ReadFile(ImgPath(id, product.Icon))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Header("Content-Disposition", "attachment; filename="+fileName)
+	c.Header("Content-Type", "image/png")
+	c.Header("Accept-Length", fmt.Sprintf("%d", len(content)))
+	c.Writer.Write([]byte(content))
+	c.JSON(http.StatusOK, gin.H{
+		"msg": "Download file successfully",
+	})
 }
 
 func (h productsHandler) UpdateProduct(c *gin.Context) {

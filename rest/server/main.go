@@ -113,7 +113,7 @@ func (h productsHandler) Listproducts(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 
-	c.JSON(200, r)
+	c.JSON(http.StatusOK, r)
 }
 
 func (h productsHandler) GetProduct(c *gin.Context) {
@@ -131,7 +131,7 @@ func (h productsHandler) GetProduct(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, product)
+	c.JSON(http.StatusOK, product)
 }
 
 func (h productsHandler) GetProductImage(c *gin.Context) {
@@ -204,7 +204,7 @@ func (h productsHandler) UpdateProduct(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, view)
+	c.JSON(http.StatusOK, view)
 }
 
 func (h productsHandler) DeleteProduct(c *gin.Context) {
@@ -226,5 +226,5 @@ func (h productsHandler) DeleteProduct(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, view)
+	c.JSON(http.StatusOK, view)
 }

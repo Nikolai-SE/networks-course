@@ -14,7 +14,18 @@
 Приложите скриншоты полученных сообщений (для обоих форматов).
 
 #### Демонстрация работы
-todo
+
+```bash
+go run lib-client/main/main.go --address smtp.yandex.ru --port 587 --sender "email@mail.com" --recipient "email@mail.com" --subject "Hello" --user user --password password --text "Text"
+```
+
+```bash
+go run lib-client/main/main.go --address smtp.yandex.ru --port 587 --sender "email@mail.com" --recipient "email@mail.com" --subject "Hello" --user user --password password --html "<p>Привет <br> <h1> Отправляю html <h1> </p>"
+```
+
+![](2024-03-29-19-12-11.png)
+
+![](2024-03-29-19-14-00.png)
 
 ### 2. SMTP-клиент (3 балла)
 Разработайте простой почтовый клиент, который отправляет текстовые сообщения

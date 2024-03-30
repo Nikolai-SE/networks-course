@@ -34,7 +34,7 @@ func main() {
 		*recipient,
 	}
 
-	request := Mail{
+	mail := Mail{
 		Sender:  *sender,
 		To:      to,
 		Subject: *subject,
@@ -47,11 +47,11 @@ func main() {
 	var msg string
 
 	if len(*html) > 0 {
-		request.Body = *html
-		msg = BuildHtmlMessage(request)
+		mail.Body = *html
+		msg = BuildHtmlMessage(mail)
 	} else {
-		request.Body = *text
-		msg = BuildTextMessage(request)
+		mail.Body = *text
+		msg = BuildTextMessage(mail)
 	}
 
 	auth := smtp.PlainAuth("", *user, *password, host)

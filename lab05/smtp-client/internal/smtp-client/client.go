@@ -47,7 +47,7 @@ func (c *Client) SendMail(mail Mail) error {
 		return err
 	}
 
-	if err := readerWriter.send("HELO domain.local", "250"); err != nil { // TODO remove %s
+	if err := readerWriter.send("HELO domain.local", "250"); err != nil {
 		return err
 	}
 

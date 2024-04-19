@@ -1,0 +1,5 @@
+localhost:88882024/03/24 18:15:51 Method: GET, Url: http://httpforever.com/, Status: 200 (200 OK)
+localhost:88882024/03/24 18:15:51 Tunneling (method: CONNECT, url: //mozilla.cloudflare-dns.com:443)
+localhost:88882024/03/24 18:15:52 Tunneling (method: CONNECT, url: //mozilla.cloudflare-dns.com:443)
+localhost:88882024/03/24 18:15:59 Cache match. Method: GET, Url: http://httpforever.com/, Status: 304 (304 Not Modified)
+localhost:88882024/03/24 18:16:04 Cache match. Method: GET, Url: http://httpforever.com/, Status: 304 (304 Not Modified)

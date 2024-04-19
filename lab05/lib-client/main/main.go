@@ -52,6 +52,7 @@ func main() {
 	} else {
 		mail.Body = *text
 		msg = BuildTextMessage(mail)
+
 	}
 
 	auth := smtp.PlainAuth("", *user, *password, host)

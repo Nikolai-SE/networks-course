@@ -31,8 +31,81 @@ _(*) Вы должны заменить стоящий здесь 8888 на но
 
 Приложите скрины или логи работы сервера.
 
+```bash
+cd proxy-server
+go run cmd/server/server.go localhost 8888
+```
+
 #### Демонстрация работы
-todo
+
+### Настройка прокси в Firefox
+![](2024-03-24-15-30-27.png)
+
+### Проксирование HTTP и тунелирование HTTPs
+![](2024-03-24-15-31-50.png)
+
+```log
+localhost:88882024/03/24 15:31:20 Method: GET, Url: http://httpforever.com/, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:20 Tunneling (method: CONNECT, url: //cdnjs.cloudflare.com:443)
+localhost:88882024/03/24 15:31:20 Tunneling (method: CONNECT, url: //cdnjs.cloudflare.com:443)
+localhost:88882024/03/24 15:31:20 Tunneling (method: CONNECT, url: //mozilla.cloudflare-dns.com:443)
+localhost:88882024/03/24 15:31:20 Tunneling (method: CONNECT, url: //cdnjs.cloudflare.com:443)
+localhost:88882024/03/24 15:31:20 Method: GET, Url: http://httpforever.com/js/init.min.js, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:22 Method: GET, Url: http://httpforever.com/css/style.min.css, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:22 Tunneling (method: CONNECT, url: //cdnjs.cloudflare.com:443)
+localhost:88882024/03/24 15:31:22 Tunneling (method: CONNECT, url: //fonts.googleapis.com:443)
+localhost:88882024/03/24 15:31:23 Tunneling (method: CONNECT, url: //fonts.gstatic.com:443)
+localhost:88882024/03/24 15:31:23 Tunneling (method: CONNECT, url: //fonts.gstatic.com:443)
+localhost:88882024/03/24 15:31:23 Tunneling (method: CONNECT, url: //fonts.gstatic.com:443)
+localhost:88882024/03/24 15:31:23 Method: GET, Url: http://httpforever.com/favicon.ico, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:23 Method: POST, Url: http://ocsp.pki.goog/gts1c3, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:23 Method: POST, Url: http://ocsp.pki.goog/gts1c3, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:23 Method: GET, Url: http://httpforever.com/css/images/banner.svg, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:23 Method: GET, Url: http://httpforever.com/css/images/header-major-on-light.svg, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:23 Method: POST, Url: http://ocsp.pki.goog/gts1c3, Status: 200 (200 OK)
+localhost:88882024/03/24 15:31:23 Method: GET, Url: http://httpforever.com/css/images/header-major-on-dark.svg, Status: 200 (200 OK)
+```
+
+### Проксирование сайта Санкт-Петербурга
+
+![](2024-03-24-15-34-02.png)
+
+```log
+localhost:88882024/03/24 15:32:45 Tunneling (method: CONNECT, url: //www.gov.spb.ru:443)
+localhost:88882024/03/24 15:32:46 Tunneling (method: CONNECT, url: //stat.sputnik.ru:443)
+localhost:88882024/03/24 15:32:47 Tunneling (method: CONNECT, url: //stat.sputnik.ru:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //www.gov.spb.ru:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //www.gov.spb.ru:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //unpkg.com:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //cdn.jsdelivr.net:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //pos.gosuslugi.ru:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //www.gov.spb.ru:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //www.gov.spb.ru:443)
+localhost:88882024/03/24 15:32:51 Tunneling (method: CONNECT, url: //www.gov.spb.ru:443)
+localhost:88882024/03/24 15:32:52 Tunneling (method: CONNECT, url: //pos.gosuslugi.ru:443)
+localhost:88882024/03/24 15:32:53 Tunneling (method: CONNECT, url: //api-maps.yandex.ru:443)
+localhost:88882024/03/24 15:32:54 Tunneling (method: CONNECT, url: //yastatic.net:443)
+localhost:88882024/03/24 15:32:59 Tunneling (method: CONNECT, url: //core-renderer-tiles.maps.yandex.net:443)
+localhost:88882024/03/24 15:32:59 Tunneling (method: CONNECT, url: //core-renderer-tiles.maps.yandex.net:443)
+localhost:88882024/03/24 15:32:59 Tunneling (method: CONNECT, url: //core-renderer-tiles.maps.yandex.net:443)
+localhost:88882024/03/24 15:32:59 Tunneling (method: CONNECT, url: //core-renderer-tiles.maps.yandex.net:443)
+localhost:88882024/03/24 15:32:59 Tunneling (method: CONNECT, url: //core-renderer-tiles.maps.yandex.net:443)
+localhost:88882024/03/24 15:32:59 Tunneling (method: CONNECT, url: //core-renderer-tiles.maps.yandex.net:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //top-fwz1.mail.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //informer.yandex.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //top-fwz1.mail.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //mc.yandex.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //ssl.google-analytics.com:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //mc.yandex.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //top-fwz1.mail.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //stat.sputnik.ru:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //stats.g.doubleclick.net:443)
+localhost:88882024/03/24 15:33:03 Tunneling (method: CONNECT, url: //mc.yandex.md:443)
+```
+
+### Обработка ошибок 
+
+![](2024-03-24-15-37-43.png)
 
 ### Б. Прокси-сервер с кешированием (4 балла)
 Когда прокси-сервер получает запрос, он проверяет, есть ли запрашиваемый объект в кэше, и,
@@ -52,7 +125,17 @@ todo
 Приложите скрины или логи, из которых понятно, что ответ на повторный запрос был взят из кэша.
 
 #### Демонстрация работы
-todo
+
+### Попадание в кеш при обновлении страницы.
+![](2024-03-24-18-18-04.png)
+
+```log
+localhost:88882024/03/24 18:15:51 Method: GET, Url: http://httpforever.com/, Status: 200 (200 OK)
+localhost:88882024/03/24 18:15:51 Tunneling (method: CONNECT, url: //mozilla.cloudflare-dns.com:443)
+localhost:88882024/03/24 18:15:52 Tunneling (method: CONNECT, url: //mozilla.cloudflare-dns.com:443)
+localhost:88882024/03/24 18:15:59 Cache match. Method: GET, Url: http://httpforever.com/, Status: 304 (304 Not Modified)
+localhost:88882024/03/24 18:16:04 Cache match. Method: GET, Url: http://httpforever.com/, Status: 304 (304 Not Modified)
+```
 
 ### В. Черный список (2 балла)
 Прокси-сервер отслеживает страницы и не пускает на те, которые попадают в черный список. Вместо
@@ -62,7 +145,21 @@ todo
 Приложите скрины или логи запроса из черного списка.
 
 #### Демонстрация работы
-todo
+
+### Черный список
+```json
+[
+    {"infix": "google.com"}
+]
+```
+
+![](2024-03-24-18-57-39.png)
+
+```log
+localhost:88882024/03/24 18:56:07 Tunneling (method: CONNECT, url: //mozilla.cloudflare-dns.com:443)
+localhost:88882024/03/24 18:57:14 Blacklist (method: CONNECT, url: //www.google.com:443)
+localhost:88882024/03/24 18:57:17 Tunneling (method: CONNECT, url: //firefox.settings.services.mozilla.com:443)
+```
 
 ## Wireshark. Работа с DNS
 Для каждого задания в этой секции приложите скрин с подтверждением ваших ответов.

@@ -41,7 +41,7 @@ func (c Client) write(data []byte) {
 	}
 }
 
-func (c Client) Process(r *bufio.Reader, timeout time.Duration) error {
+func (c Client) Process(r *bufio.Reader, w *bufio.Writer, timeout time.Duration) error {
 	rxbuf := make([]byte, 65536)
 	seqNo := 0
 	waiter := func(conn *net.UDPConn, ackNo int) (bool, error) {
@@ -56,12 +56,19 @@ func (c Client) Process(r *bufio.Reader, timeout time.Duration) error {
 
 			packet, err := utils.ReadPacket(rxbuf[0:n])
 			if err != nil {
-				log.Println(err)
+				log.Fatalln(err)
 				continue
 			}
 
 			if packet.AckNo == ackNo {
-				log.Println("Ack #", packet.AckNo)
+				log.Println("Ack#", packet.AckNo)
+				if w != nil {
+					_, err := w.Write(packet.Payload)
+					if err != nil {
+						log.Fatalln(err)
+					}
+					w.Flush()
+				}
 				return true, nil
 			}
 		}

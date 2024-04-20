@@ -25,8 +25,8 @@ func TestSendFile(t *testing.T) {
 	defer dstFile.Close()
 
 	s := server.NewServer(9999, log.New(bufio.NewWriter(logFile), "Server log: ", log.Ltime), 0.7)
-	go s.Serve(bufio.NewWriter(dstFile))
+	go s.Serve(bufio.NewWriter(dstFile), nil)
 
 	c := client.NewClient("localhost:9999", 0.7)
-	c.Process(bufio.NewReader(srcFile), time.Millisecond)
+	c.Process(bufio.NewReader(srcFile), nil, time.Millisecond)
 }

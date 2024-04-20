@@ -17,5 +17,5 @@ func main() {
 	flag.Parse()
 	l := log.New(os.Stderr, "Server log: ", log.Ltime)
 	s := Server.NewServer(*port, l, *reliability)
-	s.Serve(bufio.NewWriter(os.Stdout))
+	s.Serve(bufio.NewWriter(os.Stdout), bufio.NewReader(os.Stdin))
 }

@@ -26,7 +26,7 @@ func NewServer(port int, logger *log.Logger, reliability float64) Server {
 	}
 }
 
-func (s Server) Serve(w *bufio.Writer) error {
+func (s Server) Serve(w *bufio.Writer, r *bufio.Reader) error {
 	localAddr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", s.Port))
 	if err != nil {
 		log.Println("Error: ", err)
@@ -45,6 +45,28 @@ func (s Server) Serve(w *bufio.Writer) error {
 
 	clientSeqNo := make(map[string]int)
 	responce := utils.Packet{}
+
+	lengthToSend := 0
+	sendedLen := 0
+	buffer := make([]byte, 1024*64)
+
+	nonBlockRead := make(chan []byte)
+	go func(ch chan []byte) {
+		if r == nil {
+			close(ch)
+			return
+		}
+		defer close(ch)
+
+		localBuffer := make([]byte, 1024*64)
+		for {
+			n, err := r.Read(localBuffer)
+			if err != nil { // Maybe log non io.EOF errors, if you want
+				return
+			}
+			ch <- localBuffer[0:n]
+		}
+	}(nonBlockRead)
 
 	for {
 		n, addr, err := conn.ReadFromUDP(buf)
@@ -70,6 +92,23 @@ func (s Server) Serve(w *bufio.Writer) error {
 			w.Write(packet.Payload)
 			responce.AckNo = packet.SeqNo
 
+			/* Dual transmission. */
+			if sendedLen >= lengthToSend {
+				// Read from r
+				select {
+				case in, ok := <-nonBlockRead:
+					if ok {
+						buffer = in
+						lengthToSend = len(in)
+						sendedLen = 0
+					}
+				default:
+				}
+			}
+			if sendedLen < lengthToSend {
+				responce.Payload = buffer[sendedLen : sendedLen+min(lengthToSend-sendedLen, utils.MaxPayloadLen)]
+				sendedLen += utils.MaxPayloadLen
+			}
 			s.logger.Println("Send Ack#", responce.AckNo)
 			clientSeqNo[saddr]++
 		}

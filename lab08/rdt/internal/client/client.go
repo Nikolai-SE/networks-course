@@ -77,7 +77,7 @@ func (c Client) Process(r *bufio.Reader, timeout time.Duration) error {
 		if sendedLen >= n {
 			readedLen, err := r.Read(buffer)
 			if err != nil {
-				log.Fatalln(err)
+				return err
 			}
 			n = readedLen
 			sendedLen = 0

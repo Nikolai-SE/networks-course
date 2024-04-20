@@ -61,7 +61,7 @@ func (s Server) Serve(w *bufio.Writer, r *bufio.Reader) error {
 		localBuffer := make([]byte, 1024*64)
 		for {
 			n, err := r.Read(localBuffer)
-			if err != nil { // Maybe log non io.EOF errors, if you want
+			if err != nil {
 				return
 			}
 			ch <- localBuffer[0:n]
@@ -110,6 +110,7 @@ func (s Server) Serve(w *bufio.Writer, r *bufio.Reader) error {
 				sendedLen += utils.MaxPayloadLen
 			}
 			s.logger.Println("Send Ack#", responce.AckNo)
+			w.Flush()
 			clientSeqNo[saddr]++
 		}
 		err = s.send(conn, addr, responce)

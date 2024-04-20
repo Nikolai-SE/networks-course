@@ -108,6 +108,8 @@ func (s Server) Serve(w *bufio.Writer, r *bufio.Reader) error {
 			if sendedLen < lengthToSend {
 				responce.Payload = buffer[sendedLen : sendedLen+min(lengthToSend-sendedLen, utils.MaxPayloadLen)]
 				sendedLen += utils.MaxPayloadLen
+			} else {
+				responce.Payload = responce.Payload[0:0]
 			}
 			s.logger.Println("Send Ack#", responce.AckNo)
 			w.Flush()

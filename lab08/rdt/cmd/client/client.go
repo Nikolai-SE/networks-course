@@ -20,6 +20,5 @@ func main() {
 	flag.Parse()
 
 	c := client.NewClient(fmt.Sprintf("%s:%d", *addr, *port), 0.7)
-	rw := bufio.NewReadWriter(bufio.NewReader(os.Stdin), bufio.NewWriter(os.Stdout))
-	log.Println(c.Process(rw, time.Duration(*timeout)*time.Second))
+	log.Println(c.Process(bufio.NewReader(os.Stdin), time.Duration(*timeout)*time.Second))
 }

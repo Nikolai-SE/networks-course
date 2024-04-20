@@ -22,11 +22,6 @@ func NewClient(addr string, reliability float64) Client {
 		log.Fatalln(err)
 	}
 
-	// localAddr, err := net.ResolveUDPAddr("udp", "127.0.0.1:0")
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
-
 	conn, err := net.DialUDP("udp", nil, serverAddr)
 	if err != nil {
 		log.Fatalln(err)
@@ -46,7 +41,7 @@ func (c Client) write(data []byte) {
 	}
 }
 
-func (c Client) Process(rw *bufio.ReadWriter, timeout time.Duration) error {
+func (c Client) Process(r *bufio.Reader, timeout time.Duration) error {
 	rxbuf := make([]byte, 65536)
 	seqNo := 0
 	waiter := func(conn *net.UDPConn, ackNo int) (bool, error) {
@@ -66,9 +61,7 @@ func (c Client) Process(rw *bufio.ReadWriter, timeout time.Duration) error {
 			}
 
 			if packet.AckNo == ackNo {
-				rw.Writer.Write(packet.Payload)
 				log.Println("Ack #", packet.AckNo)
-
 				return true, nil
 			}
 		}
@@ -82,14 +75,14 @@ func (c Client) Process(rw *bufio.ReadWriter, timeout time.Duration) error {
 	for {
 		packet.SeqNo = seqNo
 		if sendedLen >= n {
-			readedLen, err := rw.Reader.Read(buffer)
+			readedLen, err := r.Read(buffer)
 			if err != nil {
 				log.Fatalln(err)
 			}
 			n = readedLen
 			sendedLen = 0
 		}
-		packet.Payload = buffer[sendedLen : sendedLen+min(n, utils.MaxPayloadLen)]
+		packet.Payload = buffer[sendedLen : sendedLen+min(n-sendedLen, utils.MaxPayloadLen)]
 		sendedLen += utils.MaxPayloadLen
 
 		data, err := utils.WritePacket(packet)

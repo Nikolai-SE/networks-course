@@ -26,7 +26,7 @@ func NewServer(port int, logger *log.Logger, reliability float64) Server {
 	}
 }
 
-func (s Server) Serve(rw *bufio.ReadWriter) error {
+func (s Server) Serve(w *bufio.Writer) error {
 	localAddr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", s.Port))
 	if err != nil {
 		log.Println("Error: ", err)
@@ -67,7 +67,7 @@ func (s Server) Serve(rw *bufio.ReadWriter) error {
 		s.logger.Printf("Received: '%v' from %v\n", packet, addr)
 
 		if packet.SeqNo == clientSeqNo[saddr] {
-			rw.Write(packet.Payload)
+			w.Write(packet.Payload)
 			responce.AckNo = packet.SeqNo
 
 			s.logger.Println("Send Ack#", responce.AckNo)
